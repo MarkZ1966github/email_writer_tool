@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Email Writer</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa;
+            padding-top: 20px;
+        }
+        .card {
+            border-radius: 15px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .card-header {
+            background-color: #6c757d;
+            color: white;
+            border-radius: 15px 15px 0 0 !important;
+        }
+        .btn-primary {
+            background-color: #5c6bc0;
+            border-color: #5c6bc0;
+        }
+        .btn-primary:hover {
+            background-color: #3f51b5;
+            border-color: #3f51b5;
+        }
+        #emailOutput {
+            border-radius: 10px;
+            border: 1px solid #dee2e6;
+            padding: 15px;
+            max-height: 500px;
+            overflow-y: auto;
+        }
+        .loader {
+            border: 5px solid #f3f3f3;
+            border-top: 5px solid #5c6bc0;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 2s linear infinite;
+            margin: 20px auto;
+            display: none;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-10">
+                <div class="card mb-4">
+                    <div class="card-header text-center">
+                        <h2>AI Email Writer</h2>
+                        <p class="mb-0">Generate professional emails with just a few inputs</p>
+                    </div>
+                    <div class="card-body">
+                        <form id="emailForm">
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label for="topic" class="form-label">Topic or Keyword*</label>
+                                    <input type="text" class="form-control" id="topic" required placeholder="e.g., Product launch, Monthly newsletter, Special offer">
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="style" class="form-label">Writing Style</label>
+                                    <input type="text" class="form-control" id="style" placeholder="e.g., Professional, Casual, Personal blog style">
+                                </div>
+                            </div>
+                            
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label for="cta" class="form-label">Call to Action (Optional)</label>
+                                    <input type="text" class="form-control" id="cta" placeholder="e.g., Buy now, Read blog post, Sign up">
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="ctaLink" class="form-label">CTA Link (Optional)</label>
+                                    <input type="text" class="form-control" id="ctaLink" placeholder="https://example.com/product">
+                                </div>
+                            </div>
+                            
+                            <div class="row mb-4">
+                                <div class="col-12">
+                                    <label class="form-label">Email Type*</label>
+                                    <div class="d-flex flex-wrap">
+                                        <div class="form-check me-4">
+                                            <input class="form-check-input" type="radio" name="emailType" id="typeLong" value="long" checked>
+                                            <label class="form-check-label" for="typeLong">
+                                                Long & Entertaining
+                                            </label>
+                                        </div>
+                                        <div class="form-check me-4">
+                                            <input class="form-check-input" type="radio" name="emailType" id="typeMedium" value="medium">
+                                            <label class="form-check-label" for="typeMedium">
+                                                Medium with CTA Focus
+                                            </label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="emailType" id="typeShort" value="short">
+                                            <label class="form-check-label" for="typeShort">
+                                                Short & Direct
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="d-grid">
+                                <button type="submit" class="btn btn-primary btn-lg">Generate Email</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="card-header">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <h3 class="mb-0">Generated Email</h3>
+                            <button id="copyBtn" class="btn btn-sm btn-light" disabled>Copy to Clipboard</button>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="loader" id="loader"></div>
+                        <div id="emailOutput" class="bg-white">
+                            <div class="text-center text-muted p-5">
+                                <p>Your generated email will appear here</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

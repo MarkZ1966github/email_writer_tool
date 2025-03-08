@@ -1,0 +1,88 @@
+document.addEventListener('DOMContentLoaded', function() {
+    const emailForm = document.getElementById('emailForm');
+    const emailOutput = document.getElementById('emailOutput');
+    const copyBtn = document.getElementById('copyBtn');
+    const loader = document.getElementById('loader');
+
+    emailForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        // Show loader
+        emailOutput.innerHTML = '';
+        loader.style.display = 'block';
+        copyBtn.disabled = true;
+        
+        // Get form values
+        const topic = document.getElementById('topic').value;
+        const style = document.getElementById('style').value;
+        const cta = document.getElementById('cta').value;
+        const ctaLink = document.getElementById('ctaLink').value;
+        const emailType = document.querySelector('input[name="emailType"]:checked').value;
+        
+        // Prepare data for API request
+        const requestData = {
+            topic,
+            style,
+            cta,
+            ctaLink,
+            emailType
+        };
+        
+        // Send request to backend
+        fetch('/generate-email', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(requestData)
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(data => {
+            // Hide loader
+            loader.style.display = 'none';
+            
+            // Display the generated email
+            const emailContent = `
+                <div class="mb-3">
+                    <strong>Subject:</strong> ${data.subject}
+                </div>
+                <div class="mb-3">
+                    <strong>Preview:</strong> ${data.preview}
+                </div>
+                <hr>
+                <div class="email-body">
+                    ${data.body}
+                </div>
+            `;
+            
+            emailOutput.innerHTML = emailContent;
+            copyBtn.disabled = false;
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            loader.style.display = 'none';
+            emailOutput.innerHTML = `<div class="alert alert-danger">Error generating email. Please try again.</div>`;
+        });
+    });
+    
+    // Copy to clipboard functionality
+    copyBtn.addEventListener('click', function() {
+        const emailText = emailOutput.innerText;
+        navigator.clipboard.writeText(emailText)
+            .then(() => {
+                const originalText = copyBtn.innerText;
+                copyBtn.innerText = 'Copied!';
+                setTimeout(() => {
+                    copyBtn.innerText = originalText;
+                }, 2000);
+            })
+            .catch(err => {
+                console.error('Failed to copy: ', err);
+            });
+    });
+});
